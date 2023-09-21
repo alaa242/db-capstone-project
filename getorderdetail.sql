@@ -1,0 +1,1 @@
+execute GetOrderDetail using @id;
