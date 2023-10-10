@@ -1,0 +1,235 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "8b8c89b8-9e33-4cc8-8b56-4ab714798b43",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Collecting mysql-connector-python\n",
+      "  Obtaining dependency information for mysql-connector-python from https://files.pythonhosted.org/packages/df/62/ac79412bcbeb08d943f06b85324fde5f8bf364cece22ba4d4cf3c053052e/mysql_connector_python-8.1.0-cp311-cp311-macosx_12_0_arm64.whl.metadata\n",
+      "  Downloading mysql_connector_python-8.1.0-cp311-cp311-macosx_12_0_arm64.whl.metadata (2.0 kB)\n",
+      "Collecting protobuf<=4.21.12,>=4.21.1 (from mysql-connector-python)\n",
+      "  Downloading protobuf-4.21.12-cp37-abi3-macosx_10_9_universal2.whl (486 kB)\n",
+      "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m486.2/486.2 kB\u001b[0m \u001b[31m15.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+      "\u001b[?25hDownloading mysql_connector_python-8.1.0-cp311-cp311-macosx_12_0_arm64.whl (9.3 MB)\n",
+      "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m9.3/9.3 MB\u001b[0m \u001b[31m14.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0ma \u001b[36m0:00:01\u001b[0m\n",
+      "\u001b[?25hInstalling collected packages: protobuf, mysql-connector-python\n",
+      "Successfully installed mysql-connector-python-8.1.0 protobuf-4.21.12\n"
+     ]
+    }
+   ],
+   "source": [
+    "!pip3 install mysql-connector-python\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "5e23661c-a009-4d4e-b14e-29e95a4151cf",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import mysql.connector as connector"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "beae46ed-94e5-4a92-80b9-a9b539b53761",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "connection = connector.connect(user = \"Admin\", password = \"3320111$\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "9e3f0da1-4ed8-4f5f-8e4d-728a3740d57b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "connection = connector.connect(user=\"Admin\", password=\"3320111$\", database=\"Little_Lemon\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "b4e269cc-fe50-48cc-8abc-da3c3995223f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cursor = connection.cursor()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "78327d56-42dd-4d0d-af59-fc83473b64d0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "query = \"SHOW TABLES\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "038d9d29-4b3b-4332-a2f0-a6ad89db52b8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cursor.execute(query)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "5a194d8a-c033-4b24-8f04-90fe48b06331",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "('Bookings',)\n",
+      "('Customers',)\n",
+      "('Menu',)\n",
+      "('OrderDeliveryStatus',)\n",
+      "('Orders',)\n",
+      "('orders_view',)\n",
+      "('StaffInformation',)\n"
+     ]
+    }
+   ],
+   "source": [
+    "tables = cursor.fetchall()\n",
+    "for table in tables:\n",
+    "    print(table) "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "2ca83264-3c2c-4d32-aa1e-c82d57f6a9b5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "columns = \"Customers.FullName,Customers.ContactNumber, Customers.Email, Orders.TotalCost\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "cfd34da0-1dc5-4406-b677-1f9d2c2e4ee1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tables = \"Customers INNER JOIN Orders ON Customers.CustomerID = Orders.CustomerID\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "fa35ec18-c3fd-491c-ac9b-291c7851e1d3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "condition = \"Orders.TotalCost > 60\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "8cb24def-9726-4213-a11b-39daf8eb8cda",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "query = f\"SELECT {columns} FROM {tables} WHERE {condition}\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "acdb7891-5274-4c84-81b7-5074ecf81f14",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cursor.execute(query)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "8c12781d-e929-4b4c-81b2-2903ddd2ada8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "results = cursor.fetchall()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "17aa3fc0-6cb2-41c0-832a-649e5eec3c2b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for row in results:\n",
+    "    full_name = row[0]\n",
+    "    contact_number = row[1]\n",
+    "    email = row[2]\n",
+    "    print(f\"Full Name: {full_name}\")\n",
+    "    print(f\"Contact Number: {contact_number}\")\n",
+    "    print(f\"Email: {email}\")\n",
+    "    print()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "id": "344d38df-50cf-4636-a0fe-bd2e4e4266f6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cursor.close()\n",
+    "connection.close()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "186a4417-63a2-45bf-8d6d-038b4ea8b2a8",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
